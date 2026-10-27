@@ -20,6 +20,17 @@ steps:
       flutter pub get
     displayName: flutter pub get
 
+  - task: DownloadSecureFile@1
+    name: debugKeystore
+    displayName: Download debug keystore
+    inputs:
+      secureFile: debug.keystore
+
+  - script: |
+      mkdir -p $HOME/.android
+      cp "$(debugKeystore.secureFilePath)" $HOME/.android/debug.keystore
+    displayName: Install debug keystore
+
   - script: flutter build apk --debug
     displayName: Build Android APK
 
