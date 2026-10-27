@@ -31,10 +31,10 @@ steps:
       cp "$(debugKeystore.secureFilePath)" $HOME/.android/debug.keystore
     displayName: Install debug keystore
 
-  - script: flutter build apk --debug
+  - script: flutter build apk --debug --build-number=$(Build.BuildId) --build-name=1.0.$(Build.BuildId)
     displayName: Build Android APK
 
-  - script: flutter build ios --simulator --debug --no-codesign
+  - script: flutter build ios --simulator --debug --no-codesign --build-number=$(Build.BuildId) --build-name=1.0.$(Build.BuildId)
     displayName: Build iOS simulator app
 
   - script: ditto -c -k --keepParent build/ios/iphonesimulator/Runner.app build/ios/iphonesimulator/Runner.app.zip
