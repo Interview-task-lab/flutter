@@ -9,10 +9,10 @@ class TestWrapper extends StatelessWidget {
   final Widget child;
 
   const TestWrapper({
-    Key? key,
+    super.key,
     required this.dataTestId,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

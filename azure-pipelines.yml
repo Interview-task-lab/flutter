@@ -1,0 +1,42 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: macos-latest
+
+variables:
+  flutterVersion: '3.44.4'
+
+steps:
+  - script: |
+      git clone --depth 1 -b $(flutterVersion) https://github.com/flutter/flutter.git $(Agent.ToolsDirectory)/flutter
+      echo "##vso[task.prependpath]$(Agent.ToolsDirectory)/flutter/bin"
+    displayName: Install Flutter
+
+  - script: |
+      flutter --version
+      flutter pub get
+    displayName: flutter pub get
+
+  - script: flutter build apk --debug
+    displayName: Build Android APK
+
+  - script: flutter build ios --simulator --debug --no-codesign
+    displayName: Build iOS simulator app
+
+  - script: ditto -c -k --keepParent build/ios/iphonesimulator/Runner.app build/ios/iphonesimulator/Runner.app.zip
+    displayName: Zip Runner.app
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish android-app
+    inputs:
+      targetPath: build/app/outputs/flutter-apk/app-debug.apk
+      artifact: android-app
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish ios-app
+    inputs:
+      targetPath: build/ios/iphonesimulator/Runner.app.zip
+      artifact: ios-app
