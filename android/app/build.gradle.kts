@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.ismailaslan.flutter_login_app"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37 // permission_handler_android 14.x requires 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
